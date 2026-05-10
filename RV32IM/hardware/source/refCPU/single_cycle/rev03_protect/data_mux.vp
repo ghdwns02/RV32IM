@@ -1,0 +1,31 @@
+
+`timescale 1ns/1ps
+
+module data_mux (
+    // DATA MEM
+    input           cs_dmem_n,
+    input    [31:0]	read_data_dmem,
+
+    // TBMAN
+    input           cs_tbman_n,
+    input    [31:0] read_data_tbman,
+
+    // TIMER
+    input           cs_timer_n,
+    input    [31:0] read_data_timer,
+
+    output reg [31:0] read_data 
+);
+
+`protected128
+P"U7U$VZ81QZUO_6H5,SP'-<C0 I^"'1U'$0\8DV?<S\S%Z$AOY%Q5XZ"Q[YK@N"9
+P&CM@6@J)[.9 ,^ U$/R:#]6L@_N=](P#V)(^O!F-9AH)0JFZ:QZN48)X/ PK]WN5
+P,+M)NZCL(R7ZL?/EHN^S^.Y1>]QA4T!EQYC.L%L&9=XZ-;&0G'\0B-)ELG]?\'.B
+PY + *X\C/0]Q;>#,+TP*1/E(T4">*#^JOA['4+E\>S28]=,K;8R!9$W(T\ZV_U!Z
+P#_41S^:XDO\TJ.B-H6JZW26;IF1NPD)'%<L:V(,]YT$W;1+.A)U,F$9 Y=$'N2DW
+POX'G57MS1*O+]ZEOY1/PDU88GF3Z1VBIFGY!10&= D;1L4U#[!ASG0\^;?RRL3,Y
+P;9132^85KD7G^,83E0E$,>Y42E(_!#NSG0R2!+!9\>&SH=2-)IP.W9OW_&$-@57$
+`endprotected128
+
+
+endmodule  

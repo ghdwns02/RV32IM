@@ -1,0 +1,146 @@
+//
+//  Author: Prof. Yongwoo Kim
+//          System Semiconductor Engineering
+//          Sangmyung University
+//  Date: July 19, 2022
+//  Revision: Jan. 26, 2023
+//  Description: Simple Hardware System based on RISC-V RV32I
+//  This code references RVbook in Korea Univ. and EECS151 in UCB.
+//
+//`timescale 1ns/1ns
+
+module SMU_RV32I_System (
+  input         CLOCK_50,
+  input   [2:0] BUTTON,
+  input   [9:0] SW,
+  output  [6:0] HEX3,
+  output  [6:0] HEX2,
+  output  [6:0] HEX1,
+  output  [6:0] HEX0,
+  output  [9:0] LEDR,
+
+  output        UART_TXD,
+  input         UART_RXD
+);
+
+  parameter RESET_PC = 32'h1000_0000;
+  parameter CLOCK_FREQ = 125_000_000;
+  parameter BAUD_RATE = 115_200;
+  parameter MIF_HEX = "";
+  parameter MIF_BIOS_HEX = "";
+  parameter DWIDTH = 32;
+  parameter AWIDTH = 17;
+
+  wire reset;
+  wire reset_poweron;
+  reg  reset_ff;
+  wire rst;
+  wire rst_n;
+
+  wire [31:0] fetch_addr;
+  wire [31:0] imem_inst;
+  wire [31:0] inst;
+  wire [31:0] data_addr;
+  wire [31:0] write_data;
+  wire [3:0]  ByteEnable;
+  wire  [31:0] read_data;
+  wire        data_we;
+  wire        data_re;
+
+  // Address Mux Signal
+  wire        cs_dmem_n;
+  wire        cs_tbman_n;
+  wire        cs_timer_n;
+
+  // Data Mux Signal
+  wire [31:0] read_imem_data_mem;
+  wire [31:0] read_data_tbman;
+  wire [31:0] read_data_timer;
+
+  wire clk = CLOCK_50;
+  wire clkb;
+  
+  // reset =  BUTTON[0]
+  // if BUTTON[0] is pressed, the reset goes down to "0"
+  // reset is a low-active signal
+
+  assign  reset_poweron = BUTTON[0];
+  assign  reset = reset_poweron;
+
+  // reset_ff is a low-active signal
+  always @(posedge clk)
+    reset_ff <= reset;
+
+  assign clkb = ~clk;
+
+  assign data_re = ~data_we;
+  
+  assign inst = imem_inst;
+
+  assign rst = ~reset_ff;
+  assign rst_n = reset_ff;
+
+  rv32i_cpu #(
+      .RESET_PC(RESET_PC)
+  ) icpu (
+    .clk         (clk), 
+    .clkb        (clkb),
+    .reset       (rst),
+    .pc          (fetch_addr),
+    .inst        (inst),
+    .MemWrite    (data_we),  // data_we: active high
+    .MemAddr     (data_addr), 
+    .MemWData    (write_data),
+    .ByteEnable  (ByteEnable),
+    .MemRData    (read_data)
+  );
+
+  ASYNC_RAM_DP_WBE #(
+      .DWIDTH (DWIDTH),
+      .AWIDTH (AWIDTH),
+      .MIF_HEX (MIF_HEX)
+  ) imem (
+    .clk      (clk),
+    .addr0    (fetch_addr[AWIDTH+2-1:2]),
+    .addr1    (data_addr[AWIDTH+2-1:2]),
+    .wbe0     (4'd0),
+    .wbe1     (ByteEnable),
+    .d0       (32'd0),
+    .d1       (write_data),
+    .wen0     (1'b0),
+    .wen1     (data_we & ~cs_dmem_n),
+    .q0       (imem_inst),
+    .q1       (read_imem_data_mem)
+  );
+
+// Put your code
+`protected128
+P7!<Z-.O!2'N+/?7!U1!!:!9O9B"I]X!-2A>?NC9[Z!&&LPF(MAXMZL9&'/>]4H"O
+P!*>A#/*A0_0MSW(3"_C)(XLU0_R?Y%V5_Z&H"[G5"=T="UR?YZ,6^&04,!"_K$8D
+P.^@L;MUO,&1>B\CS?3]*%@QB". GC1,C<%(6,&@+(:_"$%&JXEXWEZ\IQ2S-B/:0
+P ;B/1[[)D:H"I84^<ZG:$0M$>T0&;XFA6US2EI[SI<;JXNYNHM8?&),EQ/V9ZDH+
+P#>\V[>&;B1;/HVK8SL7#!V;CF$]+W5>56T(6*M0?WE6FH'BULD/#3@Y4*T$NAUTV
+P>!X]'P)/JFN&MSOJ['1%/%4@XPCH\X=.?D+"0HZ8/8MGV"YDU?KCDVO#>5B$9MY*
+PE+2;NX/>!>I.WSCO0HZRB)9M(9R[$*_Z0Z4V.L*I(D%3)88).\#RW 2)U/@'W/._
+P!19F_;DH2^H30^YEAFG>C5$ON($>F%6<L'M?M1*W+L-^1EG:43B!N9]>CC;M!9)R
+P8XJ\ ('MK'[!JN>(K]8A38 $"\NY"\M.]  $$4^-4&:8TDG:I':QKIV>MW8$G"B>
+P*G@FG%*9.V*@\?WEJNE/+J1JA3OU@2BC\"0PSH)!9T_V<N#;L[JK_Q4T^B(<UK,D
+P3,)OT9/#T^;VTH 0J;-S2X7Q=."L-C3E/.JOYXNS6T85 DZS^HQ3!,38#37*1&9@
+PJZ=H:&'_'*<;\KPH7C"N0#Z^C[WHSRORK!XZ(XMYSX$HKDDI='A_]F?I(D0!<531
+PF#XT=KM:9QLWEX$+BI X='L!<R>Q0=8Y1WA\]4):7L2!:H*)B4#H8[\7"RQ/DOV?
+P>O@),<26;9.WVH]7;)VJ7W7;TJZR,B5FK]300$-@CR<UY<T-^JJ[#'<L/H?Z&"*D
+P@&Z?,2.[HMO8%&6TTLP/E^\650(;2GW?AK_$_@P&4P!)=?R?ND]/G9*8'<[R#O,;
+PEGWLR1*RA-L!,0/'1X.2/L$>#^A"&]O26WJTA@SB0O<-AK?5AJ5N@IS7)(3AJ; N
+P7X.@5K/,IX66\4Y !HQBB;!P74X,9SWZF<'<1,/"U18:2R__#:_V%_>^-C'W>%<<
+P,@WVJ[F:DSM(LGHK^@X5:4A0[@<H$6(A:$<$I"2:0'H^G];+[1DE"=_J BU.!&RH
+PFV^FJUZ-_ H*K%M=[/<!H=,41*Y33#>4\C%E4/<R3#D" OY=+RN^0J(#LRPUGT[R
+P^]RVD]X2U2L35>V&G**E*":C$J3?;??93L#BFW?U6[KB,Y+M@:HX;"LD.@R'_;,4
+P597>F>PMH$_<!2*D*6Q(J:;K]C9$#9;DC".54G@YHY?^>ZK]:><2B9T\,&2.&ZK2
+PT:((P<H*V$O\3]9ZXT1A3-'UDT]KN;IF)223V5V@W3XA_+&\@R^F)2AAU3^:D/$.
+PLP!$^42IW=@/::I) >:USQ=G0T&GQ3M<G9H2C^O_8U!CT(QY>@EZ.*+W"7_1WS5:
+P&2?!G : L^$:C2A)VL"P1GTH:[5L$832 80A<4)OO@3SR29+;[?*GUV)'B3JE0V]
+PG@@7*N':W\2;Y_:@>973S<?M:&9 -;QO$(=%WFDI&N[ZO!SZG4"9_]/:Q=2HE;J3
+`endprotected128
+
+
+endmodule

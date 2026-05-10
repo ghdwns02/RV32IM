@@ -1,0 +1,104 @@
+
+tbman.elf:     file format elf32-littleriscv
+tbman.elf
+architecture: riscv:rv32, flags 0x00000112:
+EXEC_P, HAS_SYMS, D_PAGED
+start address 0x10000000
+
+Program Header:
+    LOAD off    0x00001000 vaddr 0x10000000 paddr 0x10000000 align 2**12
+         filesz 0x00000100 memsz 0x00000100 flags r-x
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000080  10000000  10000000  00001000  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .text.startup 00000064  10000080  10000080  00001080  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .rodata.str1.4 0000001c  100000e4  100000e4  000010e4  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  3 .comment      00000028  00000000  00000000  00001100  2**0
+                  CONTENTS, READONLY
+  4 .riscv.attributes 0000001f  00000000  00000000  00001128  2**0
+                  CONTENTS, READONLY
+SYMBOL TABLE:
+10000000 l    d  .text	00000000 .text
+10000080 l    d  .text.startup	00000000 .text.startup
+100000e4 l    d  .rodata.str1.4	00000000 .rodata.str1.4
+00000000 l    d  .comment	00000000 .comment
+00000000 l    d  .riscv.attributes	00000000 .riscv.attributes
+10000000 g       .text	00000000 _start
+10000080 g     F .text.startup	00000064 main
+1000003c g     F .text	00000044 strcmp
+1000000c g     F .text	00000030 strlen
+
+
+
+Disassembly of section .text:
+
+10000000 <_start>:
+10000000:	10010137          	lui	sp,0x10010
+10000004:	ff010113          	addi	sp,sp,-16 # 1000fff0 <main+0xff70>
+10000008:	078000ef          	jal	ra,10000080 <main>
+
+1000000c <strlen>:
+1000000c:	00050783          	lb	a5,0(a0)
+10000010:	02078063          	beqz	a5,10000030 <strlen+0x24>
+10000014:	00000793          	li	a5,0
+10000018:	00178793          	addi	a5,a5,1
+1000001c:	00f50733          	add	a4,a0,a5
+10000020:	00070703          	lb	a4,0(a4)
+10000024:	fe071ae3          	bnez	a4,10000018 <strlen+0xc>
+10000028:	00078513          	mv	a0,a5
+1000002c:	00008067          	ret
+10000030:	00000793          	li	a5,0
+10000034:	00078513          	mv	a0,a5
+10000038:	00008067          	ret
+
+1000003c <strcmp>:
+1000003c:	00050703          	lb	a4,0(a0)
+10000040:	00058783          	lb	a5,0(a1)
+10000044:	02e79663          	bne	a5,a4,10000070 <strcmp+0x34>
+10000048:	02078863          	beqz	a5,10000078 <strcmp+0x3c>
+1000004c:	00150513          	addi	a0,a0,1
+10000050:	00158593          	addi	a1,a1,1
+10000054:	0080006f          	j	1000005c <strcmp+0x20>
+10000058:	02078063          	beqz	a5,10000078 <strcmp+0x3c>
+1000005c:	00050703          	lb	a4,0(a0)
+10000060:	00058783          	lb	a5,0(a1)
+10000064:	00150513          	addi	a0,a0,1
+10000068:	00158593          	addi	a1,a1,1
+1000006c:	fee786e3          	beq	a5,a4,10000058 <strcmp+0x1c>
+10000070:	00100513          	li	a0,1
+10000074:	00008067          	ret
+10000078:	00000513          	li	a0,0
+1000007c:	00008067          	ret
+
+Disassembly of section .text.startup:
+
+10000080 <main>:
+10000080:	8000f7b7          	lui	a5,0x8000f
+10000084:	06100713          	li	a4,97
+10000088:	00e7a023          	sw	a4,0(a5) # 8000f000 <main+0x7000ef80>
+1000008c:	06400713          	li	a4,100
+10000090:	00e7a023          	sw	a4,0(a5)
+10000094:	00a00713          	li	a4,10
+10000098:	00e7a023          	sw	a4,0(a5)
+1000009c:	12345737          	lui	a4,0x12345
+100000a0:	67870713          	addi	a4,a4,1656 # 12345678 <main+0x23455f8>
+100000a4:	00e7a223          	sw	a4,4(a5)
+100000a8:	deadc737          	lui	a4,0xdeadc
+100000ac:	eef70713          	addi	a4,a4,-273 # deadbeef <main+0xceadbe6f>
+100000b0:	00e7a223          	sw	a4,4(a5)
+100000b4:	8000f6b7          	lui	a3,0x8000f
+100000b8:	04800713          	li	a4,72
+100000bc:	00000797          	auipc	a5,0x0
+100000c0:	02878793          	addi	a5,a5,40 # 100000e4 <main+0x64>
+100000c4:	00178793          	addi	a5,a5,1
+100000c8:	00e6a023          	sw	a4,0(a3) # 8000f000 <main+0x7000ef80>
+100000cc:	0007c703          	lbu	a4,0(a5)
+100000d0:	fe071ae3          	bnez	a4,100000c4 <main+0x44>
+100000d4:	07b00793          	li	a5,123
+100000d8:	00f6a423          	sw	a5,8(a3)
+100000dc:	00000513          	li	a0,0
+100000e0:	00008067          	ret

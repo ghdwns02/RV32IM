@@ -1,0 +1,9 @@
+make
+
+./simv +hex_file=fib.hex
+./simv +hex_file=strcmp.hex
+./simv +hex_file=vecadd.hex
+./simv +hex_file=cachetest.hex
+./simv +hex_file=sum.hex
+./simv +hex_file=replace.hex
+

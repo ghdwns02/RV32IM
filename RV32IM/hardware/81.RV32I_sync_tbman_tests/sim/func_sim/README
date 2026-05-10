@@ -1,0 +1,4 @@
+# VCS RUN with program
+./simv +hex_file=tbman_basic.hex
+./simv +hex_file=tbman_printf.hex
+./simv +hex_file=dhrystone.hex

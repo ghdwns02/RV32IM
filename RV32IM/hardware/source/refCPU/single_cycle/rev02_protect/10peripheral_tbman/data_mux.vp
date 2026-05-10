@@ -1,0 +1,26 @@
+
+`timescale 1ns/1ps
+
+module data_mux (
+    // DATA MEM
+    input           cs_dmem_n,
+    input    [31:0]	read_data_dmem,
+
+    // TBMAN
+    input           cs_tbman_n,
+    input    [31:0] read_data_tbman,
+
+    output reg [31:0] read_data 
+);
+
+`protected128
+P"=&O+% 6?\4Z 7K1^/ @][JE/4*GIF]9D!DS3AA]Z"\I6XJ;8LE$($-65CJ)2"3C
+PR,Q<2!H >MZ (#JN_0G-*[X>MAZT(!.L9(2G,T7%F&9&&ZRE+*)5JH$2%","Q?QW
+P,-G*-NUB"/EWN-IF+P8Y<AT/4VA*)8-T\.6&1[W=B#6O"H2THU(># K)I>\?CJ4_
+PW!B2F=^3?ST\58HV)34(P2YQ8=;0ZKALF]%9J*>QZI)14O?D-'?)E 5>#&&_NJ]X
+P[QC3W%?FYNTK]:)^O?=^\M85YT%RPYU&]:0O]&.ZG=;:3=3\0D)5N8X]-YM:M(&]
+PRV7*3BBZ:(C/>R='CY*QXF#8^-MZ'U00P<US8-5?2BDOR&Z+XE$]#F'\36+78B#^
+`endprotected128
+
+
+endmodule  

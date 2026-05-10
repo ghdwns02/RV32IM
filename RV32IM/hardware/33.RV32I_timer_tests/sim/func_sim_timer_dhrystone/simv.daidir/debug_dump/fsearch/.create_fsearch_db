@@ -1,0 +1,9 @@
+#!/bin/sh -h 
+PYTHONHOME=/tools/synopsys_2021/vcs/S-2021.09-SP2-9/etc/search/pyh
+export PYTHONHOME
+PYTHONPATH=/tools/synopsys_2021/vcs/S-2021.09-SP2-9/linux64/lib/pylib27
+export PYTHONPATH
+LD_LIBRARY_PATH=/tools/synopsys_2021/vcs/S-2021.09-SP2-9/linux64/lib:/tools/synopsys_2021/vcs/S-2021.09-SP2-9/linux64/lib/pylib27
+export LD_LIBRARY_PATH
+/tools/synopsys_2021/vcs/S-2021.09-SP2-9/linux64/bin/vcsfind_create_index.exe  -z  "/home1/xsse2/CPU_Design/my_cpu/week1x_final_project/hardware/33.RV32I_timer_tests/sim/func_sim_timer_dhrystone/simv.daidir/debug_dump/fsearch/./idents_0Ej16f.xml.gz" -o "/home1/xsse2/CPU_Design/my_cpu/week1x_final_project/hardware/33.RV32I_timer_tests/sim/func_sim_timer_dhrystone/simv.daidir/debug_dump/fsearch/fsearch.db_tmp"
+\mv "/home1/xsse2/CPU_Design/my_cpu/week1x_final_project/hardware/33.RV32I_timer_tests/sim/func_sim_timer_dhrystone/simv.daidir/debug_dump/fsearch/fsearch.db_tmp" "/home1/xsse2/CPU_Design/my_cpu/week1x_final_project/hardware/33.RV32I_timer_tests/sim/func_sim_timer_dhrystone/simv.daidir/debug_dump/fsearch/fsearch.db"

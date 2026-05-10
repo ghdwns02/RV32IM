@@ -1,0 +1,31 @@
+
+`timescale 1ns/1ns
+
+module Addr_Decoder (
+    input [31:0] Addr,
+    output reg CS_DMEM_N,
+    output reg CS_TBMAN_N,
+    output reg CS_TIMER_N
+);
+
+`protected128
+PV5^G]//!;3<?TS;L)(XO[AY6S'[$P*A34'\6VBD-]3)D#3>GHKK=C\?[PQKOX8+B
+P][:3<R]#$(_K&IW0;S\(/3P+L8"F;F6#9<"?<=$/YL/@9)_](2EPUJ"OQ-'FHE1J
+PMKQG1'PC'[ZD?IXD(S.HJ ^X4JLRL)>5#6'.;R*#4';YW&(8"=D^*YK'22Z0W:HP
+P%<UY)-3=#_/=R#*%^"=%EZX'^JGU!:,%^5-U]OG][?+@53_>8=2:ZHN)\VRX*EN,
+P.\,U3I&T=FC)^^-.O>:+ZL$.@;M.)8N1>Q'_=M3#%RW_I9GXU#]L>R4,1,6<##0!
+PJ/K8V:H!5L'FMLA8TZ#TJDN>#5+_!@?XF(@UN/,J4[0B&#QZP:8"(%#^NKC"W'(B
+P G.;B.$SUD6A&1I!^,-/RTH@07409GUM*YX^^SINCT.7T_F$+T<1*#(U6[E4:%$D
+P2G]Y^ !A'Y#REZDB.;0(0'G/UE>39;30X Q34) "!;H/%\2=KJ_X[!<\JWM-&';J
+PR0X[D0*#SGY]$BN"1=+G[:@P:B0QK%8^?Z6Y[J5A0/./XD(T[6-D(X:0QH%O$BZ?
+P=.%8-%SM^*JVR@O%R:4Y('#_02D;6[A^8M/133#I'N8DG>W]9(1>!T@<C6&KA;5#
+P)$*G]AUWG^8X-G)Y1'G%8K7$[*R(82M0YNUI.GTC+&S&J(7JU7,H>:8;08)*]OQ]
+P=2=XN0 ]8%83 :(T8/309!E(([J+8_G@3(%L%"@JL6U*>>WMP6&1R==Y.S-*I\.U
+P<;@?>1>:Z$K(7-@]+B%+]*/$+X#TL>R",4-MR=B<S#"*TJQUNJ\D271ZW]Z[? N 
+P)'XB>SD%8Y-+NM@&0UV8D4?C%3_O1PF3U[#H5[)C2C^)8YB:5-S)P-&J.$3_^23B
+PWV2<^:2&:^$*3%?U?_+7VPH'M=?Z0)TOJZ&(;-<LY/P0X2ZHVI[NFW:-,19.@/:$
+P2)]"6@"W1F(+!$%:EB6OO3>QE3!#F1Q !>'4 :$J&\0]^V <G'[W;X9S-3S_T_[!
+`endprotected128
+
+
+endmodule  

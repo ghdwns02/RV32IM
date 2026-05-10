@@ -1,0 +1,100 @@
+Magic 271485
+Revision Verdi_R-2020.12-SP2
+
+; Window Layout <x> <y> <width> <height> <signalwidth> <valuewidth>
+viewPort 0 25 3840 1042 397 65
+
+; File list:
+; openDirFile [-d delimiter] [-s time_offset] [-rf auto_bus_rule_file] path_name file_name
+openDirFile -d / "" "/home/user/projects/2023_fall/2023fa_cpu_design/week10/hardware/31.RV32I_tbman_tests/sim/func_sim/wave.fsdb"
+
+; file time scale:
+; fileTimeScale ### s|ms|us|ns|ps
+
+; signal spacing:
+signalSpacing 5
+
+; windowTimeUnit is used for zoom, cursor & marker
+; waveform viewport range
+zoom 212907.212889 568468.394067
+cursor 290000.000000
+marker 290000.000000
+
+; user define markers
+; userMarker time_pos marker_name color linestyle
+; visible top row signal index
+top 0
+; marker line index
+markerPos 31
+
+; event list
+; addEvent event_name event_expression
+; curEvent event_name
+
+
+
+COMPLEX_EVENT_BEGIN
+
+
+COMPLEX_EVENT_END
+
+
+
+; toolbar current search type
+; curSTATUS search_type
+curSTATUS ByChange
+
+
+addGroup "G1"
+activeDirFile "" "/home/user/projects/2023_fall/2023fa_cpu_design/week10/hardware/31.RV32I_tbman_tests/sim/func_sim/wave.fsdb"
+addSignal -h 15 /c_tests_tb/CPU/data_addr[31:0]
+addGroup "G2"
+addSignal -h 15 /c_tests_tb/CPU/cs_tbman_n
+addSignal -h 15 -holdScope cs_dmem_n
+addGroup "G3"
+addSignal -h 15 /c_tests_tb/CPU/inst[31:0]
+addGroup "G4"
+addSignal -h 15 /c_tests_tb/CPU/uAddrDecoder/CS_DEFAULT_N
+addGroup "G5"
+addSignal -h 15 /c_tests_tb/CPU/read_data[31:0]
+addGroup "G6"
+addSignal -h 15 /c_tests_tb/CPU/u_data_mux/cs_tbman_n
+addGroup "G7"
+addSignal -h 15 /c_tests_tb/CPU/u_data_mux/read_data_dmem[31:0]
+addSignal -h 15 -holdScope read_data_tbman[31:0]
+addGroup "G8"
+addSignal -h 15 /c_tests_tb/clk
+addGroup "G9"
+addSignal -h 15 /c_tests_tb/CPU/reset_ff
+addGroup "G10"
+addSignal -h 15 /c_tests_tb/CPU/cs_dmem_n
+addGroup "G11"
+addSignal -h 15 /c_tests_tb/CPU/fetch_addr[31:0]
+addGroup "G12"
+addSignal -h 15 /c_tests_tb/CPU/inst[31:0]
+addGroup "G13"
+addSignal -h 15 /c_tests_tb/CPU/imem_inst[31:0]
+addGroup "G14"
+addSignal -h 15 /c_tests_tb/CPU/u_data_mux/cs_dmem_n
+addSignal -h 15 /c_tests_tb/CPU/data_we
+addGroup "G15"
+addGroup "G16"
+
+; getSignalForm Scope Hierarchy Status
+; active file of getSignalForm
+activeDirFile "" "/home/user/projects/2023_fall/2023fa_cpu_design/week10/hardware/31.RV32I_tbman_tests/sim/func_sim/wave.fsdb"
+
+GETSIGNALFORM_SCOPE_HIERARCHY_BEGIN
+getSignalForm close
+
+"/c_tests_tb"
+"/c_tests_tb/CPU"
+
+SCOPE_LIST_BEGIN
+"/c_tests_tb"
+"/c_tests_tb/CPU"
+SCOPE_LIST_END
+
+GETSIGNALFORM_SCOPE_HIERARCHY_END
+
+
