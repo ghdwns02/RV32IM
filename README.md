@@ -5,7 +5,7 @@
 - 시뮬레이션 툴 : Synopsys VCS / Verdi
 
 ## 디렉터리 구조
-
+```
 RV32IM/
 ├── hardware/
 │   ├── 01.RV32I_Integrated_Test_partial_type
@@ -38,7 +38,7 @@ RV32IM/
     ├── tbman_tests			# RV32IM CPU Tbman Tests
     ├── timer_tests			# RV32IM CPU Timer Tests
     └── Makefrag			# Makefile
-
+```
 ## 시뮬레이션 실행 방법
 
 ### 컴파일 + 시뮬레이션 (Makefile 사용)
