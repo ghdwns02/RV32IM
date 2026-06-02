@@ -1,3 +1,4 @@
+// MEM 단계 값을 WB 단계로 전달하는 파이프라인 레지스터
 module MEM_WB (
 
     input               clk,
@@ -22,6 +23,7 @@ module MEM_WB (
     output  reg [31:0]  ReadDataW
 );
 
+    // load data와 ALU 결과를 WB 선택 mux까지 정렬
     always @(posedge clk or negedge n_rst) begin
         if (!n_rst) begin
             ResultSrcW <= 0;

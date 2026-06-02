@@ -1,6 +1,6 @@
+// opcode 기반 주요 제어 신호 디코딩
 module maindec(
 
-    input               Z_flag,
     input       [6:0]   opcode,
 
     output  reg         MemWrite,
@@ -15,10 +15,13 @@ module maindec(
     output              jalr
 );
 
+    // jump 계열: PCSrc 판단용 opcode 직접 추출
     assign jal = (opcode == 7'b110_1111) ? 1'b1 : 1'b0;
     assign jalr = (opcode == 7'b110_0111) ? 1'b1 : 1'b0;
 
     always@(*) begin
+        // 묶음 대입 순서: RegWrite, ImmSrc, ALUSrcA, ALUSrcB, MemWrite, ResultSrc, Branch, ALUop
+        // ResultSrc: WB 데이터 선택, ALUop: aludec 세부 연산 선택
         case(opcode)
             7'b000_0011 : {RegWrite, ImmSrc, ALUSrcA, ALUSrcB, MemWrite, ResultSrc, Branch, ALUop} = 13'b1_000_00_1001_000;
             7'b010_0011 : {RegWrite, ImmSrc, ALUSrcA, ALUSrcB, MemWrite, ResultSrc, Branch, ALUop} = 13'b0_001_00_1100_000;

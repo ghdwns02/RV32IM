@@ -1,3 +1,4 @@
+// EX 단계 값을 MEM 단계로 전달하는 파이프라인 레지스터
 module EX_MEM (
 
     input               clk,
@@ -5,6 +6,7 @@ module EX_MEM (
     input               MDUStall,
 
     input               is_mul_in,
+    input               is_div_in,
     input       [1:0]   ResultSrcE,
     input               MemWriteE,
     input               RegWriteE,
@@ -15,6 +17,7 @@ module EX_MEM (
     input       [4:0]   WAE,
 
     output  reg         is_mul_out,
+    output  reg         is_div_out,
     output  reg [1:0]   ResultSrcM,
     output  reg         MemWriteM,
     output  reg         RegWriteM,
@@ -26,8 +29,10 @@ module EX_MEM (
 );
 
     always @(posedge clk or negedge n_rst) begin
+        // reset: MEM 단계 제어 신호 무효화
         if (!n_rst) begin
             is_mul_out  <= 0;
+            is_div_out  <= 0;
             ResultSrcM  <= 0;
             MemWriteM   <= 0;
             RegWriteM   <= 0;
@@ -38,7 +43,9 @@ module EX_MEM (
             WAM         <= 0;
         end else if (MDUStall) begin
 
+            // 나눗셈 EX stall 중: MEM으로 NOP 전달, side effect 차단
             is_mul_out  <= 1'b0;
+            is_div_out  <= 1'b0;
             ResultSrcM  <= 2'b00;
             MemWriteM   <= 1'b0;
             RegWriteM   <= 1'b0;
@@ -48,7 +55,9 @@ module EX_MEM (
             WDM         <= 32'h0;
             WAM         <= 5'h0;
         end else begin
+            // 정상 동작: EX 단계 결과와 제어 신호, MEM 단계 전달
             is_mul_out  <= is_mul_in;
+            is_div_out  <= is_div_in;
             ResultSrcM  <= ResultSrcE;
             MemWriteM   <= MemWriteE;
             RegWriteM   <= RegWriteE;

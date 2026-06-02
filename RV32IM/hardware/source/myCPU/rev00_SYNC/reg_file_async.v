@@ -1,6 +1,5 @@
-
+// RV32 레지스터 파일
 module reg_file_async (
-    input clk,
     input clkb,
     input we,
     input [4:0] ra1, ra2, wa,
@@ -9,10 +8,13 @@ module reg_file_async (
 );
     parameter DEPTH = 32;
     reg [31:0] mem [0:31];
+
+    // x0: 항상 0, 읽기값도 0 고정
     assign rd1 = (ra1 != 5'd0) ? mem[ra1] : 32'd0;
     assign rd2 = (ra2 != 5'd0) ? mem[ra2] : 32'd0;
 
     `ifdef SIM
+        // 시뮬레이션 초기 X 전파 감소용 0 초기화
         initial
         begin
             integer i;
@@ -24,6 +26,7 @@ module reg_file_async (
 
     genvar i;
     generate
+        // x1~x31만 실제 저장소, x0 write 무시
         for(i = 1; i < 32 ; i = i+1) begin : REG_FILE
             always @(posedge clkb) begin
                 if(i == wa && we) begin
@@ -34,6 +37,7 @@ module reg_file_async (
     endgenerate
 
 `ifdef SIM
+    // waveform 관찰용 ABI 레지스터 신호
     wire [31:0]  x1  = mem[1 ];
     wire [31:0]  x2  = mem[2 ];
     wire [31:0]  x3  = mem[3 ];

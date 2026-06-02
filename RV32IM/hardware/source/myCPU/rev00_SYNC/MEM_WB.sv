@@ -1,3 +1,4 @@
+// MEM 단계 값을 WB 단계로 전달하는 파이프라인 레지스터
 module MEM_WB (
 
     input               clk,
@@ -22,6 +23,7 @@ module MEM_WB (
 );
 
     always @(posedge clk or negedge n_rst) begin
+        // MEM 단계 결과와 목적지 정보, WB 단계까지 유지
         if (!n_rst) begin
             ResultSrcW <= 0;
             RegWriteW <= 0;

@@ -1,3 +1,4 @@
+// ID 단계 값과 제어 신호를 EX 단계로 전달하는 파이프라인 레지스터
 module ID_EX (
 
     input               clk,
@@ -45,6 +46,7 @@ module ID_EX (
 
     parameter RESET_PC = 32'h1000_0000;
 
+    // reset/flush 시 EX 단계 side effect를 막기 위해 제어 신호 0, 명령 NOP
     always @(posedge clk or negedge n_rst) begin
         if (!n_rst) begin
             BranchE <= 0;
@@ -79,6 +81,7 @@ module ID_EX (
                 InstrE <= 32'h00000013;
                 WAE <= 0;
             end else begin
+                // 정상 동작: ID에서 만든 제어 신호와 operand를 EX로 전달
                 BranchE <= BranchD;
                 jalE <= jalD;
                 jalrE <= jalrD;

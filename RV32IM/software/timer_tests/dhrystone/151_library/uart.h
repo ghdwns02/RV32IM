@@ -9,6 +9,10 @@
 #define UTRAN_CTRL (*((volatile uint32_t*)0x80000000) & 0x01)
 #define UTRAN_DATA (*((volatile uint32_t*)0x80000008))
 
+void uart_putc(unsigned char c);
+
+void uart_puts(unsigned char* s);
+
 void uwrite_int8(int8_t c);
 
 void uwrite_int8s(const int8_t* s);

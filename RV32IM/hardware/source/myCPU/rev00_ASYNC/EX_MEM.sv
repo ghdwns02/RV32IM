@@ -1,3 +1,4 @@
+// EX 단계 값을 MEM 단계로 전달하는 파이프라인 레지스터
 module EX_MEM (
 
     input               clk,
@@ -22,6 +23,7 @@ module EX_MEM (
     output  reg [4:0]   WAM
 );
 
+    // ALU 결과, store data, write-back 목적지와 제어 신호 보관
     always @(posedge clk or negedge n_rst) begin
         if (!n_rst) begin
             ResultSrcM <= 0;

@@ -1,3 +1,4 @@
+// 파이프라인 hazard, stall, forwarding 신호 생성
 module hazard_unit(
 
     input       [4:0]   RA1D,
@@ -24,6 +25,7 @@ module hazard_unit(
     output  reg         Flush_ID_EX
 );
 
+    // ID 단계 rs1 forwarding: MEM 우선, 그 다음 WB
     always @(*) begin
         if (((RA1D == WAM) && RegWriteM) && (RA1D != 5'd0)) begin
             ForwardAD = 2'b10;
@@ -34,6 +36,7 @@ module hazard_unit(
         end
     end
 
+    // ID 단계 rs2 forwarding
     always @(*) begin
         if (((RA2D == WAM) && RegWriteM) && (RA2D != 5'd0)) begin
             ForwardBD = 2'b10;
@@ -44,6 +47,7 @@ module hazard_unit(
         end
     end
 
+    // EX 단계 ALU rs1 forwarding
     always @(*) begin
         if (((RA1E == WAM) && RegWriteM) && (RA1E != 5'd0)) begin
             ForwardAE = 2'b10;
@@ -53,6 +57,7 @@ module hazard_unit(
             ForwardAE = 2'b00;
     end
 
+    // EX 단계 ALU rs2/store data forwarding
     always @(*) begin
         if (((RA2E == WAM) && RegWriteM) && (RA2E != 5'd0)) begin
             ForwardBE = 2'b10;
@@ -62,6 +67,7 @@ module hazard_unit(
             ForwardBE = 2'b00;
     end
 
+    // load-use hazard: EX load 결과를 바로 다음 ID 명령이 쓰면 1사이클 stall
     always @(*) begin
         if (RegWriteE && ((RA1D == WAE) || (RA2D == WAE)) && (ResultSrcE == 2'b01) && (WAE != 5'd0)) begin
                 Stall = 1;
@@ -70,6 +76,7 @@ module hazard_unit(
         end
     end
 
+    // branch/jump 결정 시 IF/ID flush
     always @(*) begin
         if (PCSrcE == 2'b01 || PCSrcE == 2'b10) begin
             Flush_IF_ID = 1;
@@ -78,6 +85,7 @@ module hazard_unit(
         end
     end
 
+    // stall 또는 PC 변경 시 ID/EX에 bubble 삽입
     always @(*) begin
         if (Stall || (PCSrcE == 2'b01) || (PCSrcE == 2'b10)) begin
             Flush_ID_EX = 1;

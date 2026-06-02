@@ -1,5 +1,5 @@
 # 디렉토리 목록 정의
-SUBDIRS = cachetest fib replace strcmp sum vecadd
+SUBDIRS = cachetest fib replace strcmp sum vecadd mext_test
 
 # 기본 타겟 정의
 .PHONY: all $(SUBDIRS)

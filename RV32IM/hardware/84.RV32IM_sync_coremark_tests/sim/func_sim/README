@@ -1,0 +1,2 @@
+# VCS RUN with program
+./simv +hex_file=coremark.hex

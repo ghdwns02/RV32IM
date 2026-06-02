@@ -8,32 +8,39 @@
 ```
 RV32IM/
 ├── hardware/
-│   ├── 01.RV32I_Integrated_Test_partial_type
-│   ├── 02.RV32I_Integrated_Test
-│   ├── 03.RV32I_Integrated_Test_update
-│   ├── 10.RV32I_Integrated_Test_update_with_CSR
-│   ├── 11.RV32I_isa_tests
-│   ├── 21.RV32I_c_tests
-│   ├── 31.RV32I_tbman_tests
-│   ├── 32.RV32I_sync_gpio_tests
-│   ├── 33.RV32I_sync_timer_tests
-│   ├── 33.RV32I_timer_tests
-│   ├── 34.RV32I_sync_uart_tests
-│   ├── 52.RV32I_Integrated_Test
-│   ├── 53.RV32I_sync_Integrated_Test_update
-│   ├── 60.RV32I_sync_Integrated_Test_update_with_CSR
-│   ├── 61.RV32I_sync_isa_tests
-│   ├── 71.RV32I_sync_c_tests
-│   ├── 81.RV32I_sync_tbman_tests
-│   ├── 83.RV32I_sync_timer_tests
+│   ├── 01.RV32IM_Integrated_Test_partial_type
+│   ├── 02.RV32IM_Integrated_Test
+│   ├── 03.RV32IM_Integrated_Test_update
+│   ├── 04.RV32IM_sync_corner_Test
+│   ├── 10.RV32IM_Integrated_Test_update_with_CSR
+│   ├── 11.RV32IM_isa_tests
+│   ├── 21.RV32IM_c_tests
+│   ├── 30.RV32IM_timer_tests
+│   ├── 31.RV32IM_tbman_tests
+│   ├── 32.RV32IM_sync_gpio_tests
+│   ├── 33.RV32IM_sync_timer_tests
+│   ├── 34.RV32IM_sync_uart_tests
+│   ├── 52.RV32IM_Integrated_Test
+│   ├── 53.RV32IM_sync_Integrated_Test_update
+│   ├── 60.RV32IM_sync_Integrated_Test_update_with_CSR
+│   ├── 61.RV32IM_sync_isa_tests
+│   ├── 71.RV32IM_sync_c_tests
+│   ├── 81.RV32IM_sync_tbman_tests
+│   ├── 83.RV32IM_sync_timer_tests
+│   ├── 84.RV32IM_sync_coremark_tests
+│   ├── 85.RV32IM_sync_dhrystone_FPGA
+│   ├── 86.RV32IM_sync_coremark_FPGA
 │   └── source
 │       ├── refCPU
 │       └── myCPU
-│           ├── rev00_ASYNC				# Pipelined RISC-V CPU for RV32IM with Async Mem + Peripheral(tbman, timer)
-│           └── rev00_SYNC				# Pipelined RISC-V CPU for RV32IM with Sync Mem + Peripheral(tbman, gpio, timer, uart)
+│           ├── rev00_ASYNC			# Pipelined RISC-V CPU for RV32IM with Async Mem Block diagram + Peripheral(tbman, timer)
+│           ├── rev00_IP			# Optimized pipelined RISC-V CPU for Vivado 25.2 with IP(div, mul)
+│           ├── rev00_SYNC			# Pipelined RISC-V CPU for RV32IM with Sync Mem Block diagram + Peripheral(tbman, gpio, timer, uart)
+│           └── rev01_SYNC			# Optimized pipelined RV32IM CPU for Vivado 25.2
 └── software/
     ├── 151_library
     ├── c_tests				# RV32IM CPU C Tests(EECS151 lecture at UC Berkeley)
+	├── coremark			# EEMBC's comprehensive embedded benchmark
     ├── riscv-isa-tests		# RV32IM CPU ISA Tests
     ├── tbman_tests			# RV32IM CPU Tbman Tests
     ├── timer_tests			# RV32IM CPU Timer Tests
@@ -45,44 +52,24 @@ RV32IM/
 
 	$ cd RV32IM/hardware/01.RV32I_Integrated_Test_partial_type/sim/func_sim/
 	$ make
-
+	
 	...
 
-	$ cd RV32IM/hardware/21.RV32I_c_tests/sim/func_sim/
+	$ cd RV32IM/hardware/11.RV32IM_isa_tests/sim/func_sim
+	$ make run test=all
+
+	$ cd RV32IM/hardware/61.RV32IM_sync_isa_tests/sim/func_sim
+	$ make run test=all
+
+	$ cd RV32IM/hardware/83.RV32IM_sync_timer_tests/sim/func_sim_timer
+	$ make run test=all
+
+	$ cd RV32IM/hardware/83.RV32IM_sync_timer_tests/sim/func_sim_timer_dhrystone
+	$ make run test=all
+
+	$ cd RV32IM/hardware/84.RV32IM_sync_coremark_tests/sim/func_sim
 	$ make
-	$ ./simv +hex_file=fib.hex
-	$ ./simv +hex_file=strcmp.hex
-	$ ./simv +hex_file=vecadd.hex
-	$ ./simv +hex_file=cachetest.hex
-	$ ./simv +hex_file=sum.hex
-	$ ./simv +hex_file=replace.hex
-
-	$ cd RV32IM/hardware/11.RV32I_isa_tests/sim/func_sim
-	$ make run test=all
-
-	$ cd RV32IM/hardware/61.RV32I_sync_isa_tests/sim/func_sim
-	$ make run test=all
-
-	$ cd RV32IM/hardware/71.RV32I_sync_c_tests/func_sim/
-	$ make
-	$ ./simv +hex_file=fib.hex
-	$ ./simv +hex_file=strcmp.hex
-	$ ./simv +hex_file=vecadd.hex
-	$ ./simv +hex_file=cachetest.hex
-	$ ./simv +hex_file=sum.hex
-	$ ./simv +hex_file=replace.hex
-
-	$ cd RV32IM/hardware/83.RV32I_sync_timer_tests/sim/func_sim_timer
-	$ make run test=all
-
-	$ cd RV32IM/hardware/81.RV32I_sync_tbman_tests/sim/func_sim_timer
-	$ make run test=all
-	$ ./simv +hex_file=tbman_basic.hex
-	$ ./simv +hex_file=tbman_printf.hex
-	$ ./simv +hex_file=dhrystone.hex
-
-	$ cd RV32IM/hardware/83.RV32I_sync_timer_tests/sim/func_sim_timer_dhrystone
-	$ make run test=all
+	$ ./simv +hex_file=coremark.hex
 
 ## run.f 구성하는 RTL 소스 파일
 
@@ -99,8 +86,8 @@ RV32IM/
 | 	`alu.sv` 			| 산술/논리 연산 유닛 (ADD, SUB, AND, OR, XOR, SLT, MUL, DIV 등) |
 |	`branch_logic.sv` 		| 분기 조건 판단 (BEQ, BNE, BLT, BGE, BLTU, BGEU) |
 |	`hazard_unit.sv` 		| Data Hazard 감지 및 Forwarding / Stall / Flush 제어 |
-|	`mul_unit.sv`			| 2 Cycle (No Stall) 곱셈기 (IP) |
-|	`div_unit.sv`			| Radix-8 (3Bit/Cycle) 조합 논리 기반의 단일 사이클 지연 32비트 정수 나눗셈기 |
+|	`mul_unit.sv`			| 1사이클 레이턴시 곱셈기 (RV32M: MUL / MULH / MULHSU / MULHU) |
+|	`div_unit.sv`			| 2사이클 파이프라인으로 처리하는 Radix-8 하드웨어 나눗셈기 |
 
 ### 파이프라인 레지스터
 
@@ -130,4 +117,8 @@ RV32IM/
 | 	`flopenr.sv` 			| 동기 리셋 + Enable D 플립플롭 |
 | 	`be_logic.sv` 		| Byte Enable 신호 생성 |
 
+## Coremark Test Result
+<img width="1439" height="862" alt="스크린샷 2026-05-19 141542" src="https://github.com/user-attachments/assets/0be0369d-f7e6-4503-8136-788591d8d976" />
 
+## Dhrystone Test Result
+<img width="1439" height="862" alt="스크린샷 2026-05-19 141709" src="https://github.com/user-attachments/assets/a9285733-ab95-45fb-806c-c3eee64294f8" />

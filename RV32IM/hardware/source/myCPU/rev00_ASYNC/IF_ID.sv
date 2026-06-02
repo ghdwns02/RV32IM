@@ -1,3 +1,4 @@
+// IF 단계 값을 ID 단계로 전달하는 파이프라인 레지스터
 module IF_ID (
 
     input               clk,
@@ -16,6 +17,7 @@ module IF_ID (
 
     parameter RESET_PC = 32'h1000_0000;
 
+    // flush 시 NOP 삽입, stall 시 현재 ID 단계 값 유지
     always @(posedge clk or negedge n_rst) begin
         if (!n_rst) begin
             InstrD <= 32'h00000013;

@@ -8,6 +8,8 @@ module reg_file_async (
 );
     parameter DEPTH = 32;
     reg [31:0] mem [0:31];
+
+    // 비동기 read, x0는 항상 0으로 고정
     assign rd1 = (ra1 != 5'd0) ? mem[ra1] : 32'd0;
     assign rd2 = (ra2 != 5'd0) ? mem[ra2] : 32'd0;
 
@@ -23,6 +25,7 @@ module reg_file_async (
 
     genvar i;
     generate
+        // x1~x31만 write 가능, x0 write는 구조적으로 무시
         for(i = 1; i < 32 ; i = i+1) begin : REG_FILE
             always @(posedge clkb) begin
                 if(i == wa && we) begin

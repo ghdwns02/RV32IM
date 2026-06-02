@@ -1,3 +1,4 @@
+// 파이프라인 데이터 경로와 스테이지 연결
 module datapath(
 
     input               clk,
@@ -71,6 +72,7 @@ module datapath(
     reg     [31:0]  tohost_csr;
 
     always @(posedge clk) begin
+        // 테스트 프로그램 tohost CSR write 값 관찰용 경로
         if (Csr == 1'b1) begin
             case (InstrE[14:12])
                 3'b001 : tohost_csr = RD1E_mux;
@@ -82,6 +84,7 @@ module datapath(
             tohost_csr = 32'd0;
     end
 
+    // IF/ID: instruction fetch 결과와 PC를 ID 단계로 전달
     IF_ID u_IF_ID(
         .clk(clk),
         .n_rst(n_rst),
@@ -97,6 +100,7 @@ module datapath(
         .PCPlus4D(PCPlus4D)
     );
 
+    // ID/EX: ID에서 만든 제어 신호와 operand를 EX 단계로 전달
     ID_EX u_ID_EX(
         .clk(clk),
         .n_rst(n_rst),
@@ -141,6 +145,7 @@ module datapath(
         .WAE(WAE)
     );
 
+    // EX/MEM: ALU 결과와 store data, memory 제어 신호 전달
     EX_MEM u_EX_MEM(
         .clk(clk),
         .n_rst(n_rst),
@@ -164,6 +169,7 @@ module datapath(
         .WAM(WAM)
     );
 
+    // MEM/WB: load/ALU/PC+4 결과를 WB 단계까지 정렬
     MEM_WB u_MEM_WB(
         .clk(clk),
         .n_rst(n_rst),
@@ -187,6 +193,7 @@ module datapath(
         .ReadDataW(ReadDataW)
     );
 
+    // ID 단계 forwarding: branch/다음 EX 입력에 최신 operand 반영
     mux3 u_RD1_D(
         .in0(rd1_data),
         .in1(ResultW),
@@ -203,6 +210,7 @@ module datapath(
         .out(RD2D)
     );
 
+    // EX 단계 forwarding: ALU 입력 hazard 해결
     mux3 u_RD1_E(
         .in0(RD1E),
         .in1(ResultW),
@@ -219,6 +227,7 @@ module datapath(
         .out(RD2E_mux)
     );
 
+    // 다음 PC 선택: 순차 실행 / branch,jal / jalr
     mux3 u_pc_mux3(
         .in0(PCPlus4),
         .in1(PC_target),
@@ -237,6 +246,7 @@ module datapath(
         .q(PC)
     );
 
+    // 기본 순차 PC
     adder u_pc_plus4(
         .a(PC),
         .b(32'h4),
@@ -248,12 +258,14 @@ module datapath(
         .V()
     );
 
+    // ID 단계 immediate 확장
     extend u_Extend(
         .ImmSrc(ImmSrc),
         .in(InstrD),
         .out(ImmExt)
     );
 
+    // branch/jal target = PCE + immediate
     adder u_pc_target(
         .a(PCE),
         .b(ImmExtE),
@@ -265,6 +277,7 @@ module datapath(
         .V()
     );
 
+    // ID read, WB write를 담당하는 레지스터 파일
     reg_file_async rf(
         .clk(clk),
         .clkb(clk),
@@ -277,6 +290,7 @@ module datapath(
         .rd2(rd2_data)
     );
 
+    // ALU 입력 A: register/PC/0 중 선택
     mux3 u_SrcA_mux3(
         .in0(RD1E_mux),
         .in1(PCE),
@@ -285,6 +299,7 @@ module datapath(
         .out(SrcA)
     );
 
+    // ALU 입력 B: register 또는 immediate 선택
     mux2 u_SrcB_mux2(
         .in0(RD2E_mux),
         .in1(ImmExtE),
@@ -292,6 +307,7 @@ module datapath(
         .out(SrcB)
     );
 
+    // EX 단계 ALU: 주소 계산, 산술/논리/M-extension, branch flag 생성
     alu u_ALU(
         .a_in(SrcA),
         .b_in(SrcB),
@@ -303,6 +319,7 @@ module datapath(
         .aV(V_flag)
     );
 
+    // WB 결과 선택: ALU, load 데이터, PC+4
     mux3 u_result_mux3(
         .in0(ALUResultW),
         .in1(BE_RD),
@@ -311,6 +328,7 @@ module datapath(
         .out(ResultW)
     );
 
+    // branch/jump 조건을 최종 PCSrc로 변환
     branch_logic u_branch_logic(
         .N_flag(N_flag),
         .Z_flag(Z_flag),
@@ -324,6 +342,7 @@ module datapath(
         .PCSrc(PCSrc)
     );
 
+    // byte/halfword load-store 정렬 및 byte enable 생성
     be_logic u_be_logic(
         .AddrLast2M(ALUResultM[1:0]),
         .funct3M(InstrM[14:12]),
@@ -336,6 +355,7 @@ module datapath(
         .BE_RD(BE_RD)
     );
 
+    // load-use stall, flush, forwarding select 생성
     hazard_unit u_hazard_unit(
         .RA1D(InstrD[19:15]),
         .RA2D(InstrD[24:20]),

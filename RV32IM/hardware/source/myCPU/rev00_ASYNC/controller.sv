@@ -1,3 +1,4 @@
+// 메인 디코더와 ALU 디코더 연결
 module controller(
 
     input               Z_flag,
@@ -19,6 +20,7 @@ module controller(
 
     wire [1:0] ALUop;
 
+    // opcode 기준의 datapath 주요 제어 신호 생성
     maindec mdec(
         .Z_flag(Z_flag),
         .opcode(opcode),
@@ -34,6 +36,7 @@ module controller(
         .jalr(jalr)
     );
 
+    // funct 필드까지 반영한 실제 ALU/MDU 연산 코드 생성
     aludec adec(
         .opcode(opcode),
         .funct3(funct3),

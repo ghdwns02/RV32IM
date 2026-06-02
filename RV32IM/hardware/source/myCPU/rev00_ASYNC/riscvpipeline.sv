@@ -1,3 +1,4 @@
+// RV32IM 파이프라인 코어 최상위 wrapper
 module riscvpipeline(
 
     input               clk,
@@ -14,6 +15,7 @@ module riscvpipeline(
 
     parameter   RESET_PC = 32'h1000_0000;
 
+    // rev00_ASYNC: controller는 InstrD를 직접 보고 ID 단계 제어 신호 생성
     wire            Z_flag, ALUSrcB, RegWrite;
     wire    [1:0]   ResultSrc, ALUSrcA, PCSrc;
     wire    [2:0]   ImmSrc;
@@ -21,6 +23,7 @@ module riscvpipeline(
     wire            Branch, Btaken;
     wire    [31:0]  InstrD;
 
+    // 명령 디코드 결과를 datapath의 ID/EX 레지스터로 전달
     controller u_controller(
         .Z_flag(Z_flag),
         .opcode(InstrD[6:0]),
@@ -38,6 +41,7 @@ module riscvpipeline(
         .jalr(jalr)
     );
 
+    // 외부 instruction/data memory 인터페이스와 내부 파이프라인 연결
     datapath #(
         .RESET_PC(RESET_PC)
     ) i_datapath(

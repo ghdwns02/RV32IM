@@ -1,5 +1,4 @@
 #include "util.h"
-
 #include <stdarg.h>
 #include <stdio.h>
 #include "tb_cxxrtl_io.h"
@@ -11,8 +10,8 @@ void debug_printf(const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
 	vsnprintf(buf, PRINTF_BUF_SIZE, fmt, args);
-	tb_puts(buf);
-	//uart_puts(buf);
+	//tb_puts(buf);
+	uart_puts((unsigned char*)buf);
   //uwrite_int8s(buf);
 	va_end(args);
 }
