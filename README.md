@@ -34,9 +34,9 @@ RV32IM/
 │       ├── refCPU
 │       └── myCPU
 │           ├── rev00_ASYNC			# Pipelined RISC-V CPU for RV32IM with Async Mem Block diagram + Peripheral(tbman, timer)
-│           ├── rev00_IP			# Optimized pipelined RISC-V CPU for Vivado 25.2 with IP(div, mul)
 │           ├── rev00_SYNC			# Pipelined RISC-V CPU for RV32IM with Sync Mem Block diagram + Peripheral(tbman, gpio, timer, uart)
-│           └── rev01_SYNC			# Optimized pipelined RV32IM CPU for Vivado 25.2
+│           ├── rev01_SYNC			# Optimized pipelined RV32IM CPU for Vivado 25.2
+│           └── rev02_IP			# Optimized pipelined RISC-V CPU for Vivado 25.2 with IP(div, mul)
 └── software/
     ├── 151_library
     ├── c_tests				# RV32IM CPU C Tests(EECS151 lecture at UC Berkeley)
